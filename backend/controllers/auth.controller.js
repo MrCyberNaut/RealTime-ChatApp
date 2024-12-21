@@ -2,6 +2,8 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
+import cloudinary from "../lib/cloudinary.js";
+
 export const signup = async (req, res) => {
     const { email, fullName, password } = req.body;
     try {
@@ -94,5 +96,25 @@ export const logout = async (req, res) => {
 
 
 export const updateProfile = async (req, res) => {
-    
+    try {
+      //grabbing theprofile pic from the request body\
+
+      const{profilePic} = req.body;
+      const userId = req.user._id //we are accessing like this becasuse now it is a protected  route and the user is logged in, via the auth middleware function ... we had added the user under the request object
+       
+      if(!profilePic){
+        return res.status(400).json({message: "Profile pic is required"});
+      }
+      const uploadResponse = await cloudinary.uploader.upload(profilePic) //this will give us a reponse which we will save in upload response
+
+
+      //updating user in database
+      const updatedUser = await User.findByIdAndUpdate(userId , {profilePic:uploadResponse.secure_url},{new:true}); //new true is to get the updated user back  , if we dont pass this then we will get the old user back
+
+      res.status(200){"User profile pic updated successfully"}
+
+    } catch (error) {
+      console.log("error in updateProfile controller", error);
+      res.status(500).json({message: "Internal server error"});
+    }
 }
