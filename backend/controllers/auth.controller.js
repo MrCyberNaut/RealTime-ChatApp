@@ -111,10 +111,19 @@ export const updateProfile = async (req, res) => {
       //updating user in database
       const updatedUser = await User.findByIdAndUpdate(userId , {profilePic:uploadResponse.secure_url},{new:true}); //new true is to get the updated user back  , if we dont pass this then we will get the old user back
 
-      res.status(200){"User profile pic updated successfully"}
+      res.status(200).json("User profile pic updated successfully");
 
     } catch (error) {
       console.log("error in updateProfile controller", error);
       res.status(500).json({message: "Internal server error"});
     }
+}
+
+export const checkAuth = (req,res) => {
+  try {
+    res.status(200).json(req.user); //sending the user back to the client , this is the user that we had added in the protect route middleware  
+  } catch (error) {
+    console.log("error in checkAuth controller", error);
+    res.status(500).json({message: "Internal server error"});
+  }
 }
