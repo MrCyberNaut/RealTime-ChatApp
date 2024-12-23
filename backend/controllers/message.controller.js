@@ -48,7 +48,31 @@ export const sendMessage = async (req, res) => {
         const {text,image} = req.body; //we will get the text and image from the request body
         const {id:receiverId} = req.params; //we will get the receiverId from the url
         const senderId = req.user._id; //we will get the senderId from the logged in user
+
+        let imageUrl ;
+        if(image){
+            //upload base64 image to cloudinary  
+            const uploadResponse = await cloudinary.uploader.upload(image);
+            imageUrl = uploadResponse.secure_url;
+        }
+
+        const newMessage = new Message({
+            senderId, //written like this bcz the key and value are the same
+            receiverId,
+            text,
+            image: imageUrl //written like this bcz the key and value are not the same, it will be undefined if there is no image
+        });
+
+        await newMessage.save(); //save the message to the database
+
+        //todo : send the message to the receiver using socket.io
+        //we will emit a message event to the receiver and the receiver will listen for that event and display the message
+
+        res.status(201).json(newMessage);
+
+
     } catch (error) {
-        
+        console.log("Error in send message", error.message);
+        res.status(500).json({message: "Internal server error"});
     }
 };
