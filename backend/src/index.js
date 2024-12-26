@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser  from 'cookie-parser';
+import cors from 'cors';
 
 import { connectDB } from '../lib/db.js';
 
@@ -15,6 +16,12 @@ const PORT = process.env.PORT //to access the port number from the environment v
 
 app.use (express.json()) //to parse the incoming request with JSON payloads , basically extract the body portion of an incoming request and expose it on req.body
 app.use(cookieParser()); //to parse the incoming cookies
+app.use(cors({
+    origin : "http://localhost:5173",
+    credentials : true   //to allow the frontend to send cookies to the backend with the requests
+    
+}
+))//object to be put inside curly braces to allow the frontend to make requests to the backend
 
 
 app.use("/api/auth", authRoutes);
