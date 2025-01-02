@@ -8,7 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
-//import { useThemeStore } from "./store/useThemeStore";
+import { useThemeStore } from "./store/useThemeStore.js";
 import { useEffect } from "react";
 
 import { Loader } from "lucide-react";
@@ -18,7 +18,7 @@ import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const {authUser,checkAuth,isCheckingAuth} = useAuthStore(); // useAuthStore is imported from the store folder
-
+  const {theme} = useThemeStore(); // useThemeStore is imported from the store folder
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -39,7 +39,7 @@ if (isCheckingAuth && !authUser)
 
 
   return (
-    <div>
+    <div data-them ={theme}>
 
 {/* Navbar component is added here to display the Navbar on all pages */}
     <Navbar/> 
