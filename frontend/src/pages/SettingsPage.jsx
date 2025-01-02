@@ -1,4 +1,6 @@
+import { Send } from "lucide-react";
 import { THEMES } from "../constants";
+import { useThemeStore } from "../store/useThemeStore";
 const PREVIEW_MESSAGES =[
   {id:1,content: "YOO this is the preview of the new theme.", isSent : false},
   {id:2,content: "I kinda like it wbu ?", isSent : true},
