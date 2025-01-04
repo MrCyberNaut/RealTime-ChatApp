@@ -27,8 +27,11 @@ const SettingsPage = () => {
               key={t}
               className={`
                 group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors
-                ${theme === t ? "bg-base-200" : "hover:bg-base-200/50"}
-              `} //to check if the theme in the localstorage is the theme we are mapping through
+                ${theme === t ? "bg-base-200" : "hover:bg-base-200/50"} 
+                
+              `}
+              //
+               //to check if the theme in the localstorage is the theme we are mapping through
               onClick={() => setTheme(t)}
             >
               <div className="relative h-8 w-full rounded-md overflow-hidden" data-theme={t}>
