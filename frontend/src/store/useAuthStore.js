@@ -10,6 +10,7 @@ export const useAuthStore = create((set) => ({ // takes the first argument as a 
     isUpdatingProfile : false,
 
     isCheckingAuth : true , // sets the initial state of the store
+    onlineUsers : [], //empty array for storing online users
 
     checkAuth : async () => { 
         //related to endpoints ???

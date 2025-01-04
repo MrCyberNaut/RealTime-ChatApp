@@ -12,6 +12,7 @@ isLoading : false,
 isUsersLoading : false ,
 isMessagesLoading : false ,
 
+
 getUsers : async()=>{
     set({isUsersLoading:true});
     try {
@@ -39,7 +40,13 @@ getMessages : async(userId)=>{
     finally{
         set({isMessagesLoading:false});
     }   
-}
+},
+
+//todo: optimize later
+
+setSelectedUser : (selectedUser)=>{ //function to set the selected user for the state and side bar
+    set({selectedUser});
+},
 }));
 
 
