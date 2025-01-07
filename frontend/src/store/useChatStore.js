@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { axiosInstance } from '../lib/axios';
 
 
-export const useChatStore = create((set)=>({
+export const useChatStore = create((set,get)=>({
 
 messages :[], //empty array for storing messages
 users: [],  //empty array for storing users
@@ -40,6 +40,17 @@ getMessages : async(userId)=>{
     finally{
         set({isMessagesLoading:false});
     }   
+},
+sendMessages : async(messageData)=>{
+    const {selectedUser,messages} = get() //getting the array from above we have to use the get function fro zustnd
+    try {
+        const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`,messageData);
+        //selectedUser has to be under curly braces and not the normal braces cuz
+        //we would like to send the messageData to the API
+        set({messages:[...messages,res.data]}); //updating the messages array with the new message
+    } catch (error) {
+        toast.error(error.response.data.message);
+    }
 },
 
 //todo: optimize later
