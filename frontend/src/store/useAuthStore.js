@@ -99,11 +99,17 @@ export const useAuthStore = create((set,get) => ({ // takes the first argument a
         if(!authUser || get().socket?.connected){ //increases optimizaiton
             return;
         } 
-        const socket = io(BASE_URL)
+        const socket = io(BASE_URL, {
+            query : {
+                userId : authUser._id //passing the userId to the client
+            },
+        }); 
         socket.connect()
+
+        set ({socket:socket}) // sets the state of the store
     },
     disconnectSocket : () => {
-        get().socket.disconnect();
+        if(get().socket?.connected) get().socket.disconnect(); // optimization technique
     }
 
 }));
