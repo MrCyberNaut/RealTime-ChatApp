@@ -7,8 +7,9 @@ import { connectDB } from '../lib/db.js';
 
 import authRoutes from '../routes/auth.route.js'; 
 import messageRoutes from '../routes/message.route.js'; 
+import { app, server} from '../lib/socket.js';
 
-const app = express(); //initialize the express app
+
 
 dotenv.config();//to access the environment variables
 const PORT = process.env.PORT //to access the port number from the environment variables
@@ -27,7 +28,7 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(PORT, () =>{
+server.listen(PORT, () =>{
     console.log('Server is running on PORT:' + PORT);
     //once listening starts we will connect to the database
     connectDB();
