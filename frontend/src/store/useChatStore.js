@@ -1,11 +1,12 @@
 import {create} from 'zustand';
 import toast from 'react-hot-toast';
 import { axiosInstance } from '../lib/axios';
+import { useAuthStore } from './useAuthStore';
 
 
 export const useChatStore = create((set,get)=>({
 
-messages :[], //empty array for storing messages
+messages :[], //empty array for storing messages and to br updated in real time 
 users: [],  //empty array for storing users
 selectedUser: null, //for updating UI while user selected 
 isLoading : false,
@@ -51,6 +52,24 @@ sendMessages : async(messageData)=>{
     } catch (error) {
         toast.error(error.response.data.message);
     }
+},
+
+subscribeToMessages : () =>{
+    const {selectedUser} = get();
+    if(!selectedUser) return; //if no user is selected then return
+
+
+    const socket = useAuthStore.getState().socket; //zustand is helpful in sharing the state between different stores
+
+    //todo: optimizaiton later
+    socket.on("newMessage",(newMessage)=>{
+        set({messages: [...get().messages,newMessage]}); //basically we are keeping all the previous messages in teh array and adding the new messages in the end 
+    });
+},
+
+unsubscribeFromMessages : ()=>{
+    const socket = useAuthStore.getState().socket;
+    socket.off("newMessage"); //turning the event off , here the event is newMessages !
 },
 
 //todo: optimize later

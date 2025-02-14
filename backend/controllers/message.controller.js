@@ -2,6 +2,8 @@ import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js";
 
+import {getReceiverSocketId, io} from "../lib/socket.js";
+
 export const getUsersForSidebar = async (req, res) => {
     //we bascially want to get all the users except the logged in user
     try {
@@ -64,8 +66,15 @@ export const sendMessage = async (req, res) => {
         });
 
         await newMessage.save(); //save the message to the database
+        
 
-        //todo : send the message to the receiver using socket.io
+        //sending the message to the receiver 
+        const receiverSocketId = getReceiverSocketId(receiverId); //we will get the receiver socket id from the receiver id which we are getting from thr params above
+
+        if(receiverSocketId){
+            //if check tells us if the receiver is online then we will emit the message event to the receiver
+            io.to(receiverSocketId).emit("newMessage",newMessage); //emit the message event to the receiver and io.to ensure that we dont broadcast the message to all the connected clients and only to the receiver  //newMessage is the message we are sending to the receiver
+        }
         //we will emit a message event to the receiver and the receiver will listen for that event and display the message
 
         res.status(201).json(newMessage);

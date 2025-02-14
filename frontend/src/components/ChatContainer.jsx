@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
@@ -10,17 +10,27 @@ import { formatMessageTime } from "../lib/utils";
 const ChatContainer = () => {
     const {authUser} = useAuthStore();
 
-    const {messages,getMessages,isMessagesLoading,selectedUser} = useChatStore();
+    const {messages,getMessages,isMessagesLoading,subscribeToMessages,selectedUser,unsubscribeFromMessages} = useChatStore();
+
+    const messageEndRef = useRef(null);
 
     useEffect(() => {
         
         getMessages(selectedUser._id);
         // getMessagesfunction expects a user id in the chat store check
 
+        subscribeToMessages(); 
 
+        return () => {
+            unsubscribeFromMessages();
+        }
         
-    }, [selectedUser._id, getMessages])//whenever the seleted user's id changes, we would like to call the useEffect function again
+    }, [selectedUser._id, getMessages,subscribeToMessages,unsubscribeFromMessages]);//whenever the seleted user's id changes, we would like to call the useEffect function again
 
+    useEffect(() => {
+      if(messageEndRef.current && messages){ //this if check is only to cover any end case and avoid breakijng any of the code 
+      messageEndRef.current.scrollIntoView({behavior:"smooth"});}
+    },[messages]);
 
     if(isMessagesLoading) {
       return (
@@ -40,7 +50,8 @@ const ChatContainer = () => {
       <div className="flex-1 overflow-y-auto p-4  space-y-4">
         {messages.map((message) =>(
           <div className={`chat ${message.senderId === authUser._id ? "chat-end" :"chat-start"}`} 
-          key ={message._id }>
+          key ={message._id }
+          ref = {messageEndRef}>
             <div className="chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img src={message.senderId === authUser._id ? authUser.profilePic || "/avatar.png" : selectedUser.profilePic || "/avatar.png"} alt="profile pic" />

@@ -107,6 +107,12 @@ export const useAuthStore = create((set,get) => ({ // takes the first argument a
         socket.connect()
 
         set ({socket:socket}) // sets the state of the store
+        // now as we are connected we will listen for events which here will be the online users event 
+
+        socket.on("getOnlineUsers",(userIds) => { //callback function that receives the data and starts as soon as we login and once we get it at any time , userIds is the data and updating the onlibe users array 
+             //getOnlineUsers is the event that we are listening for and it should be the same as the one in the socket.js file 
+            set({onlineUsers : userIds }); // sets the state of the store
+        });
     },
     disconnectSocket : () => {
         if(get().socket?.connected) get().socket.disconnect(); // optimization technique
