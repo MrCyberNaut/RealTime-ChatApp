@@ -61,8 +61,10 @@ subscribeToMessages : () =>{
 
     const socket = useAuthStore.getState().socket; //zustand is helpful in sharing the state between different stores
 
-    //todo: optimizaiton later
+    
     socket.on("newMessage",(newMessage)=>{
+        const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id; //checking if the message is sent from the selected user 
+        if(!isMessageSentFromSelectedUser) return; //if the senderId of the new message is not the selected user then return
         set({messages: [...get().messages,newMessage]}); //basically we are keeping all the previous messages in teh array and adding the new messages in the end 
     });
 },
@@ -72,7 +74,7 @@ unsubscribeFromMessages : ()=>{
     socket.off("newMessage"); //turning the event off , here the event is newMessages !
 },
 
-//todo: optimize later
+
 
 setSelectedUser : (selectedUser)=>{ //function to set the selected user for the state and side bar
     set({selectedUser});
