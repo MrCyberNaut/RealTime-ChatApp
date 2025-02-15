@@ -28,14 +28,14 @@ const Sidebar = () => {
             <Users className="size-6" />
             <span className="font-medium hidden lg:block">Contacts</span>
         </div>
-        {/* TODO : ONLINE FILTER TOGGLE */}
+        {/* ONLINE FILTER TOGGLE */}
         <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
               checked={showOnlineOnly}
               onChange={(e) => setShowOnlineOnly(e.target.checked)}
-              className="checkbox checkbox-sm"
+              className="checkbox checkbox-sm" //coming fromdaisy UI
             />
             <span className="text-sm">Show online only</span>
           </label>
@@ -82,7 +82,7 @@ const Sidebar = () => {
           </button>
         ))}
 
-        {filteredUsers.length === 0 && (
+        {filteredUsers.length === 0 && ( //bascially if no users are there then show this message
           <div className="text-center text-zinc-500 py-4">No online users</div>
         )}
      </div>

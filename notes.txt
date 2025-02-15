@@ -1,0 +1,16 @@
+walking u thru the last part of the code , basically socket.js
+
+so we have the socket.js file and in the index.js we have used the server variable and instead of the previous app variable we are actually imprting it from the socket.js file 
+
+So we have a bunch of different imports, express app and the server we have created as well as the socket server on top of it ... we are listening for any incoming connections , we are handling the online users state and the disconnetions as well ....we are basically manipulating the socket map 
+
+export function getReceiverSocketId is a helper function as well as the io variable that we are using in the message controller 
+
+
+In the messagecontrller :
+we first save it  to the database , ie using await newMessage.save()...then we check if the user is online and then we can send that message to that user specifically 
+in the Authuserstore :
+we call the connectSocket function, first line is a if check and basically an optimization technique then we connect to our BASE URL then updating the socket state, then updating the onlineUsers array , then same for the disconneciton 
+
+In ChatStore:
+we are subscribing to any incoming messages , updating the state and we have that handled then we are unsubscribing it whenever we clean up ...
