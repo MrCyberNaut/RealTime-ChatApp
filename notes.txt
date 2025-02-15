@@ -14,3 +14,18 @@ we call the connectSocket function, first line is a if check and basically an op
 
 In ChatStore:
 we are subscribing to any incoming messages , updating the state and we have that handled then we are unsubscribing it whenever we clean up ...
+
+
+
+FOR DEPLOYMENT : 
+we want to bring both the frontend and the backend on one port instead of 2 different ports , so we are gonna do that 
+we add a gitignore to ignore certain files including node modules 
+BUT to depoly ahead and build we do need node modules so we add it in the "build" under the root package json file and we want to run it under backend and frontend 
+NEXT 
+we want to start the application , so we add it to start and we make it start under backend ...why ?> cuz in the backend package json file we have already specified the main jsx file , index.jsx
+NEXT 
+we go into the index.js file , import path , add the dirname variable for path resolve 
+then , if we are in the production mode , we want to make the dist folder a static document 
+
+THEN 
+if we have to visit any routes , except the authRoutes and messageRoutes , we would like to see our rect applicaiton 

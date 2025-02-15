@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 import {io} from "socket.io-client";
 
-const BASE_URL = "http://localhost:5173";
+const BASE_URL =import.meta.env.MODE ==="developemnt" ? "http://localhost:5173" : "/"; //making this port dynamic based on whether its in development or prodution mode
 
 export const useAuthStore = create((set,get) => ({ // takes the first argument as a callback function that receives a set function
     authUser : null , // sets the initial state of the store
