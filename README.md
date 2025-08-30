@@ -1,0 +1,1 @@
+Developed a full-stack real-time chat application using React.js, Node.js, Express.js, MongoDB, and Socket.io. Features include secure authentication, instant messaging, real-time user status, and image sharing with Cloudinary, all within a responsive UI built with Tailwind CSS.
